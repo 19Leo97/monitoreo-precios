@@ -167,8 +167,10 @@ En vez de usar Power Automate, se decidió reutilizar **n8n** para cerrar el cic
   {{ $json["body"]["correo"].replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>') }}
   ```
 <img width="793" height="237" alt="image" src="https://github.com/user-attachments/assets/cd2ee6f7-99a2-42cc-b013-f7a4307091eb" />
+
 **📸 [Workflow de n8n `Envio_Alertas_IA` con nodos Webhook → Gmail]**
 <img width="700" height="440" alt="image" src="https://github.com/user-attachments/assets/cf49c600-4a36-4d8e-b66a-86a144a986b7" />
+
 **📸 [Correo recibido con formato (negrillas y saltos de línea) correctamente renderizado]**
 
 ---
