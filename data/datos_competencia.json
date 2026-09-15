@@ -1,0 +1,42 @@
+[
+  {
+    "id_producto": "PROD001",
+    "sku": "102030",
+    "producto": "Televisor 4K 55",
+    "precio_competidor": 450,
+    "competidor": "SuperTienda",
+    "fecha": "2026-09-11T21:58:40.819Z"
+  },
+  {
+    "id_producto": "PROD002",
+    "sku": "102031",
+    "producto": "Laptop i5 16GB",
+    "precio_competidor": 720.5,
+    "competidor": "SuperTienda",
+    "fecha": "2026-09-11T21:58:40.819Z"
+  },
+  {
+    "id_producto": "PROD003",
+    "sku": "102032",
+    "producto": "Cafetera Expresso",
+    "precio_competidor": 85.99,
+    "competidor": "MegaMarket",
+    "fecha": "2026-09-11T21:58:40.819Z"
+  },
+  {
+    "id_producto": "PROD001",
+    "sku": "102030",
+    "producto": "Televisor 4K 55",
+    "precio_competidor": 445,
+    "competidor": "MegaMarket",
+    "fecha": "2026-09-11T21:58:40.819Z"
+  },
+  {
+    "id_producto": "PROD004",
+    "sku": "102033",
+    "producto": "Audífonos Bluetooth",
+    "precio_competidor": 59.99,
+    "competidor": "SuperTienda",
+    "fecha": "2026-09-11T21:58:40.819Z"
+  }
+]
