@@ -57,10 +57,6 @@ Proyecto personal de portafolio que implementa una arquitectura moderna de datos
   Power BI Desktop + Power Query → Dashboard de negocio
 ```
 
-**📸 [Insertar aquí captura del diagrama de arquitectura / infraestructura Docker corriendo]**
-
----
-
 ## 📂 Estructura del repositorio
 
 ```
@@ -86,8 +82,7 @@ proyecto-monitoreo-precios/
 
 Se creó la estructura del repositorio con `git init` y se levantó el entorno base con Docker Compose, incluyendo un contenedor de **PostgreSQL** (base de datos `retail_db`) y uno de **n8n** (orquestador local), ambos con volúmenes persistentes.
 
-**📸 [Insertar captura: `docker compose up -d` corriendo exitosamente]**
-**📸 [Insertar captura: n8n abierto en `localhost:5678`]**
+<img width="310" height="212" alt="image" src="https://github.com/user-attachments/assets/af03307f-87c7-4b74-82d8-74af151487dc" />
 
 ---
 
@@ -109,8 +104,11 @@ Se creó la estructura del repositorio con `git init` y se levantó el entorno b
 - El nodo **Write Files** fallaba por permisos. Se resolvió modificando el `docker-compose.yml` de n8n, agregando las variables de entorno `N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false` y `N8N_RESTRICT_FILE_ACCESS_TO=/data`, y montando un volumen local `./data:/data`.
 - Al ejecutar PySpark en Windows sin Docker (por limitaciones de compatibilidad de Spark con contenedores en este caso), fue necesario instalar manualmente **`winutils.exe`** (compatible con Hadoop 3.3.5) y configurar las variables de entorno `HADOOP_HOME` y `PATH` para evitar errores clásicos de Spark en Windows.
 
-**📸 [Insertar captura: workflow de n8n con el Webhook y nodos de ingesta]**
-**📸 [Insertar captura: consola con el resultado del script `procesamiento_precios.py` (tabla `df_resultado.show()`)]**
+<img width="798" height="247" alt="image" src="https://github.com/user-attachments/assets/c33162b6-f219-4ef8-9692-460d8e3af947" />
+<img width="797" height="239" alt="image" src="https://github.com/user-attachments/assets/be7bef8d-c47f-4a6f-be9e-fec5612e3d70" />
+**📸 [Workflow de n8n, simulación API REST y nodos de ingesta]**
+<img width="1855" height="909" alt="image" src="https://github.com/user-attachments/assets/c0fc6ebb-d4a6-4050-8c37-a531b33be145" />
+**📸 [Resultado del script `procesamiento_precios.py`]**
 
 ---
 
@@ -126,9 +124,14 @@ Se creó la estructura del repositorio con `git init` y se levantó el entorno b
 **🔧 Ajustes y problemas resueltos:**
 - Ninguno de los modelos tenía cuota disponible en el nivel gratuito inicial de Azure AI Foundry. Fue necesario **actualizar la suscripción a Pay-as-you-go** y **solicitar cuota manualmente** para poder desplegar un modelo.
 - El código original planteaba usar `langchain-openai` como puente entre CrewAI y Azure OpenAI. Finalmente se adaptó el script para usar la **integración nativa de LLM de CrewAI**, sin depender de esa librería intermedia.
+- 
+<img width="923" height="299" alt="image" src="https://github.com/user-attachments/assets/67289990-2162-49f0-9b1e-69498bc43ac8" />
 
-**📸 [Insertar captura: recurso de Azure AI Foundry con el modelo desplegado]**
-**📸 [Insertar captura: consola con la interacción de los agentes / correo generado]**
+**📸 [Recurso de Azure AI Foundry con el modelo desplegado]**
+
+<img width="1578" height="817" alt="image" src="https://github.com/user-attachments/assets/ee2961c0-87f3-432b-86ca-85da3b4f9579" />
+<img width="1510" height="814" alt="image" src="https://github.com/user-attachments/assets/30c0a31e-f8f4-4086-a852-1bd80b74c7e9" />
+**📸 [Consola con la interacción de los agentes]**
 
 ---
 
@@ -138,8 +141,16 @@ Se creó la estructura del repositorio con `git init` y se levantó el entorno b
 - Se conectó **Power BI Desktop** a la base de datos PostgreSQL local en modo Importar.
 - En **Power Query** se ajustó el tipo de dato de `porcentaje_desviacion` y se creó una columna condicional **Severidad Alerta** ("Crítica (Acción IA)" / "Normal (Bajo control)").
 - Se construyó un dashboard con tarjeta de conteo de alertas críticas, gráfico de barras de `diferencia_precio` por producto y una tabla detallada. Guardado como `Reporte_Monitoreo_Precios.pbix`.
-
-**📸 [Insertar captura: dashboard de Power BI]**
+- Para poder realizar la tarjeta de conteo se hizo uso del DAX:
+```dax
+Count of Severidad Alerta total for Severidad Alerta = 
+CALCULATE(
+	COUNT('public analisis_precios_competencia'[Severidad Alerta]),'public analisis_precios_competencia'[Severidad Alerta] = "Crítica (Acción IA)"
+)
+```
+<img width="1231" height="696" alt="image" src="https://github.com/user-attachments/assets/4b58f754-74f9-47ef-aaee-5a9f49592f01" />
+<img width="1234" height="672" alt="image" src="https://github.com/user-attachments/assets/c1607716-4097-4d90-b0f6-ba620d35e029" />
+**📸 [Dashboard de Power BI]**
 
 **Paso 3 — Automatización del envío de alertas (con n8n, en lugar de Power Automate):**
 
@@ -155,9 +166,10 @@ En vez de usar Power Automate, se decidió reutilizar **n8n** para cerrar el cic
   ```javascript
   {{ $json["body"]["correo"].replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>') }}
   ```
-
-**📸 [Insertar captura: workflow de n8n `Envio_Alertas_IA` con nodos Webhook → Gmail]**
-**📸 [Insertar captura: correo recibido con formato (negrillas y saltos de línea) correctamente renderizado]**
+<img width="793" height="237" alt="image" src="https://github.com/user-attachments/assets/cd2ee6f7-99a2-42cc-b013-f7a4307091eb" />
+**📸 [Workflow de n8n `Envio_Alertas_IA` con nodos Webhook → Gmail]**
+<img width="700" height="440" alt="image" src="https://github.com/user-attachments/assets/cf49c600-4a36-4d8e-b66a-86a144a986b7" />
+**📸 [Correo recibido con formato (negrillas y saltos de línea) correctamente renderizado]**
 
 ---
 
