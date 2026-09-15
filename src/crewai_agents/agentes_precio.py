@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # 1. Configuración de variables de entorno para Azure OpenAI
-# Reemplaza con tus datos reales obtenidos del portal de Azure
 os.environ["AZURE_OPENAI_API_KEY"] = os.getenv("AZURE_OPENAI_API_KEY")
 os.environ["AZURE_OPENAI_ENDPOINT"] = os.getenv("AZURE_OPENAI_ENDPOINT")
 
@@ -23,11 +22,11 @@ llm = LLM(
 def obtener_alertas_sql():
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            database="retail_db",
-            user="admin",
-            password="MiPasswordSecreto123",
-            port="5432"
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT")
         )
         cursor = conn.cursor()
         cursor.execute("SELECT id_producto, producto, precio_competidor, precio_interno, porcentaje_desviacion FROM analisis_precios_competencia WHERE alerta_critica = 'SÍ';")
